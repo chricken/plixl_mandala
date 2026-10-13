@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mandala Creator</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- Header Toolbar -->
+    <header class="app-header">
+      <div class="header-brand">
+        <svg class="logo-icon" viewBox="0 0 24 24" width="24" height="24">
+          <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="2"/>
+          <circle cx="12" cy="12" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M4.93 19.07l14.14-14.14" stroke="currentColor" stroke-width="1"/>
+        </svg>
+        <span class="app-title">Mandala Creator</span>
+      </div>
+
+      <div class="header-actions">
+        <button id="btn-add-layer" class="btn btn-primary" title="Neue Ebene hinzufügen">
+          <span class="icon">+</span> Ebene
+        </button>
+        <button id="btn-add-group" class="btn btn-secondary" title="Neues verschachteltes Mandala / Gruppe">
+          <span class="icon">⊞</span> Gruppe / Mandala
+        </button>
+        <div class="divider"></div>
+        <button id="btn-zoom-fit" class="btn btn-icon" title="Zoom zurücksetzen">⛶</button>
+        <button id="btn-toggle-grid" class="btn btn-icon" title="Hilfslinien / Raster umschalten">#</button>
+        <button id="btn-export-dialog" class="btn btn-success" title="Mandala exportieren">
+          <span class="icon">💾</span> Export
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace-container">
+      <!-- Canvas Viewport -->
+      <div class="canvas-viewport" id="canvas-viewport">
+        <canvas id="mandala-canvas"></canvas>
+        <div class="canvas-hud">
+          <span id="zoom-indicator">100%</span>
+        </div>
+      </div>
+
+      <!-- Properties Inspector (Right sidebar / panel) -->
+      <aside class="properties-panel" id="properties-panel">
+        <div class="panel-header">
+          <h3>Eigenschaften</h3>
+        </div>
+        <div class="panel-content" id="properties-container">
+          <div class="empty-selection-msg">Keine Ebene ausgewählt</div>
+        </div>
+      </aside>
+
+      <!-- Floating / Dockable Layers Window -->
+      <div class="layers-window floating" id="layers-window">
+        <div class="layers-window-header" id="layers-window-header">
+          <span class="layers-title">Ebenen</span>
+          <div class="layers-window-controls">
+            <button id="btn-dock-layers" class="btn-tool" title="Andocken / Loslösen">🗖</button>
+            <button id="btn-minimize-layers" class="btn-tool" title="Minimieren">_</button>
+          </div>
+        </div>
+        <div class="layers-window-body" id="layers-window-body">
+          <div class="layers-toolbar">
+            <button id="btn-layer-new-circle" class="btn-mini" title="Kreis">+</button>
+            <button id="btn-layer-new-rect" class="btn-mini" title="Rechteck">▭</button>
+            <button id="btn-layer-new-tri" class="btn-mini" title="Dreieck">△</button>
+            <button id="btn-layer-new-text" class="btn-mini" title="Text">T</button>
+            <button id="btn-layer-new-path" class="btn-mini" title="Pfad">∿</button>
+            <button id="btn-layer-new-mandala" class="btn-mini" title="Sub-Mandala">❖</button>
+          </div>
+          <div class="layers-tree" id="layers-tree">
+            <!-- Layers tree items rendered dynamically -->
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Export Modal Dialog -->
+    <div class="modal-backdrop" id="export-modal" style="display: none;">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Mandala Exportieren</h3>
+          <button class="modal-close" id="btn-close-export">&times;</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="export-format">Format:</label>
+            <select id="export-format" class="form-input">
+              <option value="svg">SVG (Vektorgrafik - editierbar)</option>
+              <option value="png">PNG (Rastergrafik mit Transparenz)</option>
+              <option value="jpg">JPG (Rastergrafik mit weißem Hintergrund)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="export-size">Export-Größe (px, quadratisch):</label>
+            <div class="export-size-inputs">
+              <input type="number" id="export-size" class="form-input" value="1200" min="100" max="8000" step="100">
+              <div class="quick-sizes">
+                <button class="btn-chip" data-size="800">800px</button>
+                <button class="btn-chip active" data-size="1200">1200px</button>
+                <button class="btn-chip" data-size="2400">2400px (HD)</button>
+                <button class="btn-chip" data-size="4000">4000px (Print)</button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group" id="export-bg-group">
+            <label for="export-bg-transparent">
+              <input type="checkbox" id="export-bg-transparent" checked> Transparenter Hintergrund (für PNG/SVG)
+            </label>
+          </div>
+          <div id="export-progress" class="export-progress" style="display: none;">
+            <div class="spinner"></div>
+            <span>Export wird im Web Worker generiert...</span>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" id="btn-cancel-export">Abbrechen</button>
+          <button class="btn btn-primary" id="btn-do-export">Herunterladen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
