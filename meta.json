@@ -1,0 +1,9 @@
+{
+  "title": "Mandala Creator",
+  "uniqueTitle": "mandala",
+  "version": 0.5,
+  "status": "alpha",
+  "desc": "A Creator for Mandala Graphics. With Export.",
+  "urlGame": "/apps/mandala",
+  "multiplayer": false
+}
